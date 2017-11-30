@@ -11,6 +11,7 @@ Widget::Widget(QWidget *parent) :
     timer.start(10);
     ui->setupUi(this);
 
+
     srand(time(0));
 
     this->colors = QVector<int>{1, 1, 1};
