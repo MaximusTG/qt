@@ -20,7 +20,7 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     timer.start(TICK * 1000);
     connect(&timer, SIGNAL(timeout()), this, SLOT(redraw()));
-    balls = QVector<Ball>{Ball(MODE_SIDE_FALLER, 300, 300, 50, 0.8, 0, GRAVITY, 100, -100, 0), Ball(MODE_STRAIGHT_FLYER, 200, 200, 50, 1, 0, 0, -300, 300, 0)};
+    balls = QVector<Ball>{Ball(MODE_SIDE_FALLER, 300, 300, 50, 0.8, 0, GRAVITY, 100, -100, 0), Ball(MODE_STRAIGHT_FLYER, 200, 200, 50, 1, -100, 0, -300, 300, 0)};
 }
 
 Widget::~Widget()
