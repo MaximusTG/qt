@@ -21,27 +21,27 @@ void Widget::paintEvent(QPaintEvent *e) // protected
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::green));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 50, height - 50);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 * 6 / 7, height * 6 / 7);
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::yellow));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 100, height - 100);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 * 5 / 7, height * 5 / 7);
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::green));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 150, height - 150);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 * 4 / 7, height  * 4 / 7);
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::blue));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 200, height - 200);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 * 3 / 7, height  * 3 / 7);
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::black));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 250, height - 250);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 * 2 / 7, height * 2 / 7);
 
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     painter.setBrush(QBrush(Qt::red));
-    painter.drawEllipse(QPoint(width / 2, height), width / 2 - 300, height - 300);
+    painter.drawEllipse(QPoint(width / 2, height), width / 2 / 7, height / 7);
 }
 
 Widget::~Widget()
