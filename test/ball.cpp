@@ -1,5 +1,24 @@
 #include "ball.h"
+
 #include <QDebug>
+#include <cmath>
+
+
+// YBRAT V DRYGOI FAIL
+
+template <typename T>
+int sign(T object) {
+    if (object > 0) {
+        return 1;
+    } else if (object < 0) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+
+// ===================
 
 
 Ball::Ball()
@@ -141,29 +160,74 @@ void Ball::normalize_coords_and_bounce()
     if (x_ -  radius_ < 0 || x_ + radius_ > WIDTH) {
         if (x_ -  radius_ < 0) {
             x_ = radius_;
+            reconstruct_after_bounce_from_wall(LEFT);
         } else {
             x_ = WIDTH - radius_;
+            reconstruct_after_bounce_from_wall(RIGHT);
         }
-        qDebug() << "BUM_X";
-        if (mode_ == MODE_SIDE_FALLER) {
-            reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
-        } else if (mode_ == MODE_STRAIGHT_FLYER) {
-            qDebug() << "SPD " << x_starting_speed_ << " " << x_current_speed_;
-            reconstruct(mode_, x_, y_, radius_, elasticity_, - x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
-            qDebug() << "SPD " << x_starting_speed_ << " " << x_current_speed_;
-        }
+
     }
     if (y_ -  radius_ < 0 || y_ + radius_ > HEIGHT) {
         if (y_ -  radius_ < 0) {
             y_ = radius_;
+            reconstruct_after_bounce_from_wall(UP);
         } else {
             y_ = HEIGHT - radius_;
+            reconstruct_after_bounce_from_wall(DOWN);
         }
-        qDebug() << "BUM_Y";
+    }
+}
+
+void Ball::reconstruct_after_bounce_from_wall(int wall_direction)
+{
+    if (wall_direction == RIGHT || wall_direction == LEFT) {
+        if (mode_ == MODE_SIDE_FALLER) {
+            reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
+        } else if (mode_ == MODE_STRAIGHT_FLYER) {
+            reconstruct(mode_, x_, y_, radius_, elasticity_, - x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
+        }
+    } else if (wall_direction == UP || wall_direction == DOWN) {
         if (mode_ == MODE_SIDE_FALLER) {
             reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, y_acseleration_, x_current_speed_, - y_current_speed_ * elasticity_, 0);
         } else if (mode_ == MODE_STRAIGHT_FLYER) {
             reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, - y_acseleration_, x_current_speed_, - y_current_speed_ * elasticity_, 0);
         }
     }
+}
+
+bool Ball::is_collide(Ball another_ball)
+{
+    return pow((x_ - another_ball.get_x()), 2) + pow((y_ - another_ball.get_y()), 2) <= pow(radius_ / 2 + another_ball.get_radius() / 2, 2);
+}
+
+void Ball::reverse()
+{
+    qDebug() << x_ << y_;
+    if (mode_ == MODE_SIDE_FALLER) {
+        reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
+        reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, y_acseleration_, x_current_speed_, - y_current_speed_ * elasticity_, 0);
+    } else if (mode_ == MODE_STRAIGHT_FLYER) {
+        reconstruct(mode_, x_, y_, radius_, elasticity_, - x_acseleration_, y_acseleration_, - x_current_speed_ * elasticity_, y_current_speed_, 0);
+        reconstruct(mode_, x_, y_, radius_, elasticity_, x_acseleration_, - y_acseleration_, x_current_speed_, - y_current_speed_ * elasticity_, 0);
+    }
+
+}
+
+void Ball::solve_collision(Ball* another_ball)
+{
+    if (!is_collide(*another_ball)) {
+        return;
+    }
+
+    int dx = x_ - another_ball->get_x();
+    int dy = y_ - another_ball->get_y();
+
+    x_ += dx * 1 / (rand() % 8 + 8);
+    y_ += dy * 1 / (rand() % 8 + 8);
+    another_ball->x_ -= dx * 1 / (rand() % 8 + 10);
+    another_ball->y_ -= dy * 1 / (rand() % 8 + 10);
+
+    reverse();
+    another_ball->reverse();
+
 }

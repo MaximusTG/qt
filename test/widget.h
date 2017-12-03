@@ -27,7 +27,7 @@ private:
     QVector<Ball> balls;
 
 private slots:
-    void redraw();
+    void recalculate_objects_positions();
 
 protected:
     void paintEvent(QPaintEvent * event);
